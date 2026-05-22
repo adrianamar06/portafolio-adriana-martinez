@@ -13,7 +13,6 @@ html, body {
     height: 100%;
     background-color: #f7f9fa;
     font-family: var(--font-bubbly);
-    overflow-x: hidden;
 }
 
 /* --- THE NAVIGATION BAR OVERLAY --- */
@@ -57,6 +56,7 @@ html, body {
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
+    overflow: hidden;
     
     /* --- INJECTING YOUR BACKGROUND IMAGE --- */
     background-image: linear-gradient(to right, rgba(255,255,255,0) 25%, rgba(255,255,255,0.75) 75%), url('../assets/images/myself.webp');
@@ -290,7 +290,7 @@ html, body {
 
 .editorial-page {
     width: 100vw;
-    min-height: 100vh; /* Changed from fixed 100vh to allow the whole page to expand */
+    min-height: auto; /* Changed from fixed 100vh to allow the whole page to expand */
     box-sizing: border-box;
     padding: 7.5rem 8% 4rem 8%; /* Reduced top padding from 10rem to slide content upwards */
     background-color: #ffffff;
@@ -328,12 +328,15 @@ html, body {
     box-shadow: 0 15px 35px rgba(212,175,55,0.15); /* Adds a subtle gold tint shadow on hover */
 }
 
-/* Right Side Content Block (Height limits removed to enable full page scrolling) */
+/* Right Side Content Block (Locked to view window with internal scrolling enabled) */
 .about-text-side {
     flex: 1.2;
     display: flex;
     flex-direction: column;
     text-align: left;
+    height: 75vh; /* Locks the box height to match the image precisely */
+    overflow-y: scroll !important; /* FORCES internal scrolling inside this element */
+    padding-right: 1.5rem; /* Adds breathing room for the internal scrollbar */
 }
 
 /* Typography elements */
@@ -346,12 +349,15 @@ html, body {
 }
 
 .editorial-lead {
-    font-family: var(--font-clean);
-    font-size: 1.2rem;
-    color: var(--gold);
+    font-family: var(--font-serif); /* Changed to your serif font for an editorial look */
+    font-style: italic; /* Slanted for classic quote style */
+    font-size: 1.4rem; /* Scaled up to pop instantly */
+    color: var(--text-dark); /* Darker for high contrast readability */
     font-weight: 600;
-    margin: 0 0 2.5rem 0;
-    line-height: 1.5;
+    margin: 0 0 3rem 0;
+    line-height: 1.6;
+    padding-left: 1.5rem;
+    border-left: 3px solid var(--gold); /* Adds a sharp, clean gold accent bar on the left */
 }
 
 /* Interactive Text Columns */
@@ -420,4 +426,23 @@ html, body {
     .about-image-side { position: relative; top: 0; height: 45vh; width: 100%; }
     .section-title { font-size: 3rem; }
     .feature-item:hover { transform: none; } /* Deactivates slide shifts on touchscreen gestures */
+}
+
+/* --- COMPONENT-LEVEL GOLD SCROLLBAR --- */
+
+/* Target the text box scrollbar path */
+.about-text-side::-webkit-scrollbar {
+    width: 8px !important; 
+    display: block !important;
+}
+
+/* Style the dragging thumb with solid gold */
+.about-text-side::-webkit-scrollbar-thumb {
+    background-color: #d4af37 !important; /* Your brand gold */
+    border-radius: 10px !important;
+}
+
+/* Change shade on hover */
+.about-text-side::-webkit-scrollbar-thumb:hover {
+    background-color: #b5921c !important; 
 }
