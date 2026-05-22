@@ -1,143 +1,4 @@
 :root {
-    --gold: #d4af37;          /* Your established gold brand color */
-    --text-dark: #1a2a3a;     /* Deep contrast blue-black for readable taglines */
-    --font-bubbly: 'Fredoka', sans-serif;
-    --font-serif: 'Playfair Display', serif;
-}
-
-/* Reset settings to ensure absolute edge-to-edge full screen sizing */
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #f7f9fa;
-    font-family: var(--font-bubbly);
-}
-
-/* --- THE NAVIGATION BAR OVERLAY --- */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2rem 5%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 90%;
-    z-index: 10; /* Ensures the links float gracefully on top of the image canvas */
-}
-.logo {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--text-dark);
-}
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 2.5rem;
-    margin: 0;
-    padding: 0;
-}
-.nav-links a {
-    text-decoration: none;
-    color: var(--text-dark);
-    font-weight: 600;
-    font-size: 1.05rem;
-    transition: color 0.2s;
-}
-.nav-links a.active, .nav-links a:hover {
-    color: var(--gold);
-}
-
-/* --- FULL CANVAS SCREEN --- */
-.editorial-viewport {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    box-sizing: border-box;
-    overflow: hidden;
-    
-    /* --- INJECTING YOUR BACKGROUND IMAGE --- */
-    background-image: linear-gradient(to right, rgba(255,255,255,0) 25%, rgba(255,255,255,0.75) 75%), url('../assets/images/myself.webp');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 8rem 8% 4rem 8%;
-}
-
-/* --- EXACT TEXT PLACEMENTS MATCHING INSPIRATION --- */
-
-/* Massive Header Top-Centered Text spanning across background layers */
-.bg-portfolio-text {
-    font-family: var(--font-serif);
-    font-size: 7.5rem;
-    font-weight: 700;
-    letter-spacing: 6px;
-    color: rgba(26, 42, 58, 0.85); /* Dark editorial color matching the example picture */
-    margin: 1.5rem 0 0 0;
-    text-align: center;
-    width: 100%;
-    line-height: 1;
-    text-transform: uppercase;
-}
-
-/* Mid-Right Block Positioning */
-.identity-block {
-    position: absolute;
-    right: 12%;
-    top: 52%;
-    transform: translateY(-50%);
-    text-align: left; /* Kept clean matching the text block in your file */
-}
-
-/* Your name using your established bubbly choice, flipped to gold */
-.client-name {
-    font-family: var(--font-bubbly);
-    font-size: 3.5rem;
-    font-weight: 700;
-    color: var(--gold);
-    margin: 0 0 0.2rem 0;
-}
-
-.client-subtitle {
-    font-size: 1.15rem;
-    color: var(--text-dark);
-    margin: 0;
-    font-weight: 400;
-    letter-spacing: 0.5px;
-}
-
-/* Lower Right Booking Email Block */
-.minimal-footer {
-    position: absolute;
-    bottom: 4rem;
-    right: 12%;
-    text-align: right;
-}
-
-.client-email {
-    font-family: var(--font-bubbly);
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--text-dark);
-    margin: 0;
-}
-
-/* --- RESPONSIVE FIXES FOR MOBILE DEVICES --- */
-@media (max-width: 950px) {
-    .bg-portfolio-text { font-size: 4rem; margin-top: 4rem; }
-    .client-name { font-size: 2.5rem; }
-    .identity-block { right: 5%; top: 60%; }
-    .minimal-footer { right: 5%; bottom: 2rem; }
-    .editorial-viewport { background-image: linear-gradient(to bottom, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.85) 70%), url('../assets/images/myself.webp'); }
-}
-
-:root {
     --gold: #d4af37;          
     --text-dark: #1a2a3a;     
     --font-clean: 'Fredoka', sans-serif;
@@ -152,13 +13,12 @@ html, body {
     height: 100%;
     background-color: #ffffff;
     font-family: var(--font-clean);
-    overflow: hidden;
 }
 
-/* --- MODERN OVERLAY NAVBAR --- */
+/* --- NAVIGATION HEADER LINK STYLING --- */
 .navbar {
     display: flex;
-    justify-content: flex-end; /* Pushes links to the right side seamlessly */
+    justify-content: flex-end; 
     align-items: center;
     padding: 2.5rem 8%;
     position: absolute;
@@ -189,17 +49,18 @@ html, body {
     color: var(--gold);
 }
 
-/* --- EDITORIAL VIEWPORT CANVAS --- */
+/* --- HOMEPAGE EDITORIAL VIEWPORT --- */
 .editorial-viewport {
     position: relative;
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
+    overflow: hidden; 
     
-    /* --- FIXING THE SPREAD IMAGE ISSUE --- */
+    /* Absolute aspect-ratio control for clean non-stretching portraits */
     background-image: linear-gradient(to right, rgba(255,255,255,0) 20%, rgba(255,255,255,0.8) 70%), url('../assets/images/myself.webp');
-    background-size: contain; /* Prevents the image from stretching or inflating unnaturally */
-    background-position: left center; /* Aligns your portrait perfectly along the left framing */
+    background-size: contain; 
+    background-position: left center; 
     background-repeat: no-repeat;
     
     display: flex;
@@ -208,29 +69,26 @@ html, body {
     padding: 10rem 12% 6rem 12%;
 }
 
-/* --- TYPOGRAPHY UPGRADES --- */
-
-/* Massive Header Moved to the Right into the White Space */
+/* Big "PORTFOLIO" Header moved into the white space */
 .bg-portfolio-text {
     font-family: var(--font-serif);
-    font-size: 7.5rem; /* Slightly adjusted to make sure it fits perfectly on one line */
+    font-size: 7.5rem;
     font-weight: 700;
     letter-spacing: 6px;
     color: #2c3e50; 
     margin: 0;
-    text-align: left; /* Changes text alignment from center to left */
+    text-align: left;
     width: auto;
     line-height: 1;
     text-transform: uppercase;
     opacity: 0.9;
     
-    /* Pushes the block to align perfectly with your name on the right */
     position: absolute;
     right: 12%;
-    top: 18%; /* Places it elegantly above your name block */
+    top: 18%; 
 }
 
-/* Mid-Right Block Positioning */
+/* Identity Sidebar Blocks */
 .identity-block {
     position: absolute;
     right: 12%;
@@ -239,7 +97,6 @@ html, body {
     text-align: left;
 }
 
-/* Updated to use the same Editorial Serif Font as Portfolio */
 .client-name {
     font-family: var(--font-serif);
     font-size: 3.8rem;
@@ -258,7 +115,6 @@ html, body {
     letter-spacing: 0.5px;
 }
 
-/* Lower Right Booking Email Block */
 .minimal-footer {
     position: absolute;
     bottom: 5rem;
@@ -274,29 +130,17 @@ html, body {
     margin: 0;
 }
 
-/* --- MOBILE COMPATIBILITY SCALING --- */
-@media (max-width: 950px) {
-    .bg-portfolio-text { font-size: 4rem; }
-    .client-name { font-size: 2.5rem; }
-    .identity-block { right: 8%; top: 65%; }
-    .minimal-footer { right: 8%; bottom: 3rem; }
-    .editorial-viewport { 
-        background-size: cover; /* Fallback shift for narrow smartphone windows */
-        background-image: linear-gradient(to bottom, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.9) 65%), url('../assets/images/myself.webp'); 
-    }
-}
-
-/* --- EDITORIAL ABOUT PAGE STYLES (RE-ENGINEERED) --- */
-
+/* --- GLOBAL EDITORIAL STRUCTURES --- */
 .editorial-page {
     width: 100vw;
-    min-height: auto; /* Changed from fixed 100vh to allow the whole page to expand */
+    min-height: 100vh;
+    height: auto;
     box-sizing: border-box;
-    padding: 7.5rem 8% 4rem 8%; /* Reduced top padding from 10rem to slide content upwards */
+    padding: 8.5rem 8% 4rem 8%;
     background-color: #ffffff;
-    overflow-y: visible; /* Fixed: Enables native scrolling across the actual webpage */
 }
 
+/* --- ABOUT MY WORK LAYOUT CONFIGS --- */
 .about-layout {
     display: flex;
     align-items: flex-start;
@@ -305,11 +149,10 @@ html, body {
     width: 100%;
 }
 
-/* Left Image Framing with a clean layout shift transition */
 .about-image-side {
     flex: 1;
-    position: sticky; /* Image floats nicely in place as you scroll the text on desktop */
-    top: 7.5rem;
+    position: sticky;
+    top: 8.5rem;
     height: 75vh;
 }
 
@@ -321,25 +164,21 @@ html, body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
-
-/* Micro-interaction: Image gently pops on hover */
 .editorial-img:hover {
     transform: scale(1.01) translateY(-2px);
-    box-shadow: 0 15px 35px rgba(212,175,55,0.15); /* Adds a subtle gold tint shadow on hover */
+    box-shadow: 0 15px 35px rgba(212,175,55,0.15);
 }
 
-/* Right Side Content Block (Locked to view window with internal scrolling enabled) */
 .about-text-side {
     flex: 1.2;
     display: flex;
     flex-direction: column;
     text-align: left;
-    height: 75vh; /* Locks the box height to match the image precisely */
-    overflow-y: scroll !important; /* FORCES internal scrolling inside this element */
-    padding-right: 1.5rem; /* Adds breathing room for the internal scrollbar */
+    height: 75vh; 
+    overflow-y: scroll !important; /* Forces independent column scrolling */
+    padding-right: 1.5rem; 
 }
 
-/* Typography elements */
 .section-title {
     font-family: var(--font-serif);
     font-size: 4.5rem;
@@ -348,19 +187,19 @@ html, body {
     line-height: 1;
 }
 
+/* High impact pulling quote style */
 .editorial-lead {
-    font-family: var(--font-serif); /* Changed to your serif font for an editorial look */
-    font-style: italic; /* Slanted for classic quote style */
-    font-size: 1.4rem; /* Scaled up to pop instantly */
-    color: var(--text-dark); /* Darker for high contrast readability */
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--text-dark);
     font-weight: 600;
     margin: 0 0 3rem 0;
     line-height: 1.6;
     padding-left: 1.5rem;
-    border-left: 3px solid var(--gold); /* Adds a sharp, clean gold accent bar on the left */
+    border-left: 3px solid var(--gold);
 }
 
-/* Interactive Text Columns */
 .editorial-features-list {
     display: flex;
     flex-direction: column;
@@ -369,13 +208,10 @@ html, body {
 
 .feature-item {
     padding: 1rem 1.5rem;
-    border-left: 2px solid #f0f0f0; /* Soft initial boundary indicator */
+    border-left: 2px solid #f0f0f0;
     transition: all 0.3s ease-in-out;
     border-radius: 0 8px 8px 0;
 }
-
-/* --- THE HOVER MAGIC --- */
-/* Item subtly slides right, illuminates borders in gold, and turns white on interaction */
 .feature-item:hover {
     border-left: 3px solid var(--gold);
     background-color: rgba(212, 175, 55, 0.02);
@@ -393,8 +229,6 @@ html, body {
     font-size: 1.5rem;
     transition: transform 0.3s ease;
 }
-
-/* Icons do a playful mini-bounce when you hover over the text section */
 .feature-item:hover .feature-icon {
     transform: scale(1.25) rotate(-5deg);
 }
@@ -406,9 +240,8 @@ html, body {
     margin: 0;
     transition: color 0.2s;
 }
-
 .feature-item:hover h3 {
-    color: var(--gold); /* Title transitions to your gold color when active */
+    color: var(--gold);
 }
 
 .feature-item p {
@@ -419,30 +252,131 @@ html, body {
     margin: 0;
 }
 
-/* Tablet / Mobile view restructuring */
-@media (max-width: 950px) {
-    .editorial-page { height: auto; padding: 6rem 5% 3rem 5%; }
-    .about-layout { flex-direction: column; gap: 2.5rem; }
-    .about-image-side { position: relative; top: 0; height: 45vh; width: 100%; }
-    .section-title { font-size: 3rem; }
-    .feature-item:hover { transform: none; } /* Deactivates slide shifts on touchscreen gestures */
+/* --- GALLERY GRID MODULES --- */
+.gallery-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
 }
 
-/* --- COMPONENT-LEVEL GOLD SCROLLBAR --- */
+.gallery-header-block {
+    text-align: left;
+}
 
-/* Target the text box scrollbar path */
+.gallery-lead {
+    font-family: var(--font-clean);
+    font-size: 1.15rem;
+    color: var(--gold);
+    font-weight: 600;
+    margin: 0.5rem 0 0 0;
+}
+
+.editorial-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 280px;
+    gap: 2.5rem;
+    padding-bottom: 6rem;
+}
+
+.gallery-item {
+    position: relative;
+    background-color: #fcfcfc;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+    cursor: pointer;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.grid-tall { grid-row: span 2; }
+.grid-wide { grid-column: span 2; }
+.grid-offset-up { transform: translateY(-15px); }
+.grid-offset-down { transform: translateY(15px); }
+
+.gallery-item:hover {
+    transform: scale(1.02) translateY(-5px);
+    box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+    z-index: 5;
+}
+.gallery-item:hover img { transform: scale(1.05); }
+
+.item-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(26, 42, 58, 0.85) 0%, rgba(26, 42, 58, 0) 100%);
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    box-sizing: border-box;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.gallery-item:hover .item-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.photo-caption {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+/* --- INTERIOR DRAGGABLE TEXT BOX GOLD TRACK --- */
 .about-text-side::-webkit-scrollbar {
-    width: 8px !important; 
+    width: 6px !important;
     display: block !important;
 }
-
-/* Style the dragging thumb with solid gold */
 .about-text-side::-webkit-scrollbar-thumb {
-    background-color: #d4af37 !important; /* Your brand gold */
+    background-color: var(--gold) !important;
     border-radius: 10px !important;
 }
-
-/* Change shade on hover */
 .about-text-side::-webkit-scrollbar-thumb:hover {
-    background-color: #b5921c !important; 
+    background-color: #b5921c !important;
+}
+
+/* --- CORE GLOBAL RESPONSIVE ENGINE --- */
+@media (max-width: 950px) {
+    .navbar { padding: 2rem 5%; justify-content: center; }
+    .editorial-viewport { 
+        background-size: cover; 
+        background-image: linear-gradient(to bottom, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.9) 65%), url('../assets/images/best-shoot.jpg'); 
+        padding: 8rem 5% 4rem 5%;
+    }
+    .bg-portfolio-text { font-size: 4rem; top: 12%; right: 5%; left: 5%; text-align: center; }
+    .identity-block { text-align: center; left: 5%; right: 5%; top: 62%; }
+    .client-name { font-size: 2.8rem; }
+    .minimal-footer { left: 5%; right: 5%; text-align: center; bottom: 3rem; }
+    
+    .editorial-page { height: auto; padding: 8rem 5% 3rem 5%; }
+    .about-layout { flex-direction: column; gap: 2.5rem; }
+    .about-image-side { position: relative; top: 0; height: 45vh; width: 100%; }
+    .about-text-side { height: auto; overflow-y: visible; width: 100%; padding-right: 0; }
+    .section-title { font-size: 3rem; }
+    .feature-item:hover { transform: none; }
+    
+    .editorial-gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 240px; gap: 1.5rem; }
+    .grid-wide { grid-column: span 1; }
+    .grid-offset-up, .grid-offset-down { transform: none; }
+    .gallery-item:hover { transform: none; }
+}
+
+@media (max-width: 600px) {
+    .editorial-gallery-grid { grid-template-columns: 1fr; }
+    .grid-tall { grid-row: span 1; }
 }
