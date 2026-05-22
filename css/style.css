@@ -1,604 +1,287 @@
 :root {
-    --bg-blue: #e3f2fd;       /* Bubbly, soft light blue */
-    --paper-white: #fafafa;   /* Off-white for the scrapbook pages */
-    --gold: #d4af37;          /* Metallic gold for accents and buttons */
-    --text-dark: #2c3e50;     /* Soft dark blue/gray for readable text */
-    --journal-tilt: rotate(-1.5deg); /* Scrapbook tilt effect */
+    --gold: #d4af37;          /* Your established gold brand color */
+    --text-dark: #1a2a3a;     /* Deep contrast blue-black for readable taglines */
+    --font-bubbly: 'Fredoka', sans-serif;
+    --font-serif: 'Playfair Display', serif;
 }
 
-body {
-    background-color: var(--bg-blue);
-    color: var(--text-dark);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Reset settings to ensure absolute edge-to-edge full screen sizing */
+html, body {
     margin: 0;
     padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f7f9fa;
+    font-family: var(--font-bubbly);
+    overflow-x: hidden;
 }
 
-/* Navigation Styling */
+/* --- THE NAVIGATION BAR OVERLAY --- */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 10%;
-    background: transparent;
+    padding: 2rem 5%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 90%;
+    z-index: 10; /* Ensures the links float gracefully on top of the image canvas */
+}
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-dark);
 }
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 2.5rem;
+    margin: 0;
+    padding: 0;
 }
 .nav-links a {
     text-decoration: none;
     color: var(--text-dark);
     font-weight: 600;
+    font-size: 1.05rem;
+    transition: color 0.2s;
 }
 .nav-links a.active, .nav-links a:hover {
     color: var(--gold);
-    border-bottom: 2px dashed var(--gold); /* Scrapbook stitched line effect */
 }
 
-/* Scrapbook Main Card Layout */
-.journal-container {
-    max-width: 1100px;
-    margin: 2rem auto;
-    padding: 3rem;
-    background-color: var(--paper-white);
-    border-radius: 12px;
-    box-shadow: 5px 5px 20px rgba(0,0,0,0.05); /* Soft paper shadow */
-    border: 1px solid rgba(0,0,0,0.05);
-}
-
-.hero-page {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 3rem;
-}
-
-/* Text and Buttons */
-.hero-text h1 {
-    font-size: 3.5rem;
-    margin: 0 0 1rem 0;
-    color: var(--text-dark);
-}
-.gold-btn {
-    display: inline-block;
-    padding: 0.8rem 2rem;
-    background-color: var(--gold);
-    color: white;
-    text-decoration: none;
-    border-radius: 25px;
-    font-weight: bold;
-    box-shadow: 2px 4px 10px rgba(212, 175, 55, 0.3);
-    transition: transform 0.2s;
-}
-.gold-btn:hover {
-    transform: translateY(-2px);
-}
-
-/* --- PURE CSS SCRAPBOOK ELEMENTS --- */
-
-/* The Polaroid Frame */
-.polaroid-frame {
-    background: white;
-    padding: 1rem 1rem 2.5rem 1rem;
-    box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.15);
-    transform: var(--journal-tilt); /* Subtle handmade tilt */
+/* --- FULL CANVAS SCREEN --- */
+.editorial-viewport {
     position: relative;
-    border: 1px solid #eee;
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    
+    /* --- INJECTING YOUR BACKGROUND IMAGE --- */
+    background-image: linear-gradient(to right, rgba(255,255,255,0) 25%, rgba(255,255,255,0.75) 75%), url('../assets/images/myself.webp');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8rem 8% 4rem 8%;
 }
-.polaroid-frame img {
-    width: 280px;
-    height: 350px;
-    object-fit: cover;
-}
-.polaroid-caption {
+
+/* --- EXACT TEXT PLACEMENTS MATCHING INSPIRATION --- */
+
+/* Massive Header Top-Centered Text spanning across background layers */
+.bg-portfolio-text {
+    font-family: var(--font-serif);
+    font-size: 7.5rem;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: rgba(26, 42, 58, 0.85); /* Dark editorial color matching the example picture */
+    margin: 1.5rem 0 0 0;
     text-align: center;
-    font-family: 'Courier New', Courier, monospace; /* Typed journal style */
-    font-weight: bold;
-    margin-top: 1rem;
-    color: #555;
-}
-
-/* Washi Tape Accent */
-.tape-element {
-    position: absolute;
-    top: -25px;
-    left: 30%;
-    width: 120px;
-    height: 35px;
-    background-color: rgba(212, 175, 55, 0.4); /* Translucent gold tape */
-    backdrop-filter: blur(2px);
-    transform: rotate(-5deg);
-    border-left: 2px dashed rgba(0,0,0,0.1); /* Ripped tape look */
-    border-right: 2px dashed rgba(0,0,0,0.1);
-    box-shadow: 1px 2px 5px rgba(0,0,0,0.05);
-}
-
-/* --- STRENGTHS PAGE LAYOUT --- */
-
-.strengths-layout {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 4rem;
-}
-
-.showcase-side {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    padding-top: 2rem;
-}
-
-/* Giving this polaroid a slightly different look to feel hand-placed */
-.unique-tilt {
-    transform: rotate(2deg) !important; 
-}
-
-.details-side {
-    flex: 1.5;
-}
-
-.details-side h2 {
-    font-size: 2.5rem;
-    margin: 0.5rem 0 1rem 0;
-}
-
-.intro-p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-    color: #555;
-}
-
-/* Strengths Cards Grid */
-.strengths-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Creates a neat 2x2 grid */
-    gap: 1.5rem;
-}
-
-.journal-card {
-    background: #ffffff;
-    padding: 1.5rem;
-    border-radius: 8px;
-    border-left: 4px solid var(--gold); /* Adds a nice notebook-tab colored accent */
-    box-shadow: 2px 4px 10px rgba(0,0,0,0.02);
-    transition: transform 0.2s;
-}
-
-.journal-card:hover {
-    transform: translateY(-3px);
-}
-
-.journal-card h4 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.2rem;
-    color: var(--text-dark);
-}
-
-.journal-card p {
-    margin: 0;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: #666;
-}
-
-/* Badge Styling */
-.badge {
-    background-color: rgba(212, 175, 55, 0.15);
-    color: #b5921c;
-    padding: 0.3rem 1rem;
-    border-radius: 15px;
-    font-size: 0.85rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Responsive fix for smaller screens */
-@media (max-width: 900px) {
-    .strengths-layout {
-        flex-direction: column;
-
-
-    }
-    .strengths-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* --- GALLERY PAGE LAYOUT --- */
-
-.gallery-section h2 {
-    font-size: 2.5rem;
-    margin: 0.5rem 0 1rem 0;
-}
-
-.gallery-intro {
-    font-size: 1.1rem;
-    color: #555;
-    margin-bottom: 3rem;
-}
-
-/* The Grid Framework */
-.photo-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
-    gap: 3rem 2rem; /* Generous vertical and horizontal spacing */
-    padding: 1rem;
-}
-
-/* Individual Scrapbook Photo Frames */
-.scrapbook-frame {
-    background: #ffffff;
-    padding: 0.8rem 0.8rem 2rem 0.8rem;
-    box-shadow: 3px 6px 15px rgba(0, 0, 0, 0.08);
-    border: 1px solid #f0f0f0;
-    position: relative;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.scrapbook-frame img {
     width: 100%;
-    height: 300px;
-    object-fit: cover; /* Keeps images beautifully cropped without stretching */
-    display: block;
+    line-height: 1;
+    text-transform: uppercase;
 }
 
-.frame-label {
-    text-align: center;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-    margin: 1rem 0 0 0;
-    color: #666;
-    font-size: 0.95rem;
-}
-
-/* Scrapbook Variables for Alternating Tilts */
-.tilt-left {
-    transform: rotate(-2deg);
-}
-
-.tilt-right {
-    transform: rotate(1.5deg);
-}
-
-.tilt-none {
-    transform: rotate(0.5deg);
-}
-
-/* Interactive Hover Effect: Straightens out when hovered */
-.scrapbook-frame:hover {
-    transform: rotate(0deg) scale(1.03);
-    box-shadow: 5px 12px 20px rgba(0, 0, 0, 0.15);
-    z-index: 10; /* Ensures the hovered photo sits on top */
-}
-
-/* A Clearer Washi Tape look for the Gallery */
-.tape-clear {
+/* Mid-Right Block Positioning */
+.identity-block {
     position: absolute;
-    top: -15px;
-    left: 35%;
-    width: 90px;
-    height: 28px;
-    background-color: rgba(255, 255, 255, 0.6); /* Frosted glass tape look */
-    border-left: 2px dashed rgba(0,0,0,0.05);
-    border-right: 2px dashed rgba(0,0,0,0.05);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-    transform: rotate(2deg);
+    right: 12%;
+    top: 52%;
+    transform: translateY(-50%);
+    text-align: left; /* Kept clean matching the text block in your file */
 }
 
-/* Responsive adjustments for Tablets and Phones */
-@media (max-width: 900px) {
-    .photo-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
-    }
-}
-
-@media (max-width: 600px) {
-    .photo-grid {
-        grid-template-columns: 1fr; /* 1 column on mobile phones */
-    }
-}
-
-/* --- PRICING PAGE LAYOUT --- */
-
-.pricing-section h2 {
-    font-size: 2.5rem;
-    margin: 0.5rem 0 1rem 0;
-}
-
-.pricing-intro {
-    font-size: 1.1rem;
-    color: #555;
-    margin-bottom: 3rem;
-}
-
-/* Flexbox Row Container */
-.pricing-container {
-    display: flex;
-    justify-content: center;
-    align-items: stretch; /* Makes all cards match heights automatically */
-    gap: 2.5rem;
-    margin-bottom: 3rem;
-    padding: 1rem 0;
-}
-
-/* Base Price Card Styles (Scrapbook Page look) */
-.price-card {
-    background: #ffffff;
-    border: 1px solid #eee;
-    padding: 2.5rem 2rem;
-    border-radius: 12px;
-    box-shadow: 2px 8px 15px rgba(0,0,0,0.03);
-    flex: 1;
-    max-width: 350px;
-    position: relative;
-    display: flex;
-    flex-direction: column; /* Allows button to align neatly at bottom */
-    justify-content: space-between;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-/* Specific Scrapbook Tilts for Pricing */
-.page-tilt-left {
-    transform: rotate(-1deg);
-}
-
-.page-tilt-right {
-    transform: rotate(1.2deg);
-}
-
-/* Hover Effect */
-.price-card:hover {
-    transform: rotate(0deg) scale(1.02);
-    box-shadow: 5px 15px 25px rgba(0,0,0,0.08);
-    z-index: 5;
-}
-
-/* Featured / Most Popular Highlight Card */
-.featured-card {
-    border: 2px solid var(--gold);
-    box-shadow: 4px 12px 20px rgba(212, 175, 55, 0.1);
-}
-
-.popular-tag {
-    position: absolute;
-    top: -15px;
-    right: 20px;
-    background: var(--gold);
-    color: white;
-    font-size: 0.75rem;
-    font-weight: bold;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    box-shadow: 1px 3px 6px rgba(0,0,0,0.1);
-}
-
-/* Card Header Elements */
-.card-header h3 {
-    margin: 0;
-    font-size: 1.4rem;
-    color: var(--text-dark);
-}
-
-.price {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--text-dark);
-    margin: 1rem 0 1.5rem 0;
-    font-family: 'Courier New', Courier, monospace; /* Keeping a slight raw diary font accent */
-}
-
-/* Feature Bullet Point Styling */
-.package-features {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 2rem 0;
-    text-align: left;
-    flex-grow: 1; /* Pushes list down, forcing buttons to align uniformly */
-}
-
-.package-features li {
-    padding: 0.6rem 0;
-    font-size: 0.95rem;
-    color: #555;
-    border-bottom: 1px dashed #f0f0f0; /* Notebook lined layout element */
-}
-
-/* Booking Buttons */
-.select-btn {
-    display: block;
-    text-align: center;
-    padding: 0.8rem;
-    border: 2px solid var(--gold);
+/* Your name using your established bubbly choice, flipped to gold */
+.client-name {
+    font-family: var(--font-bubbly);
+    font-size: 3.5rem;
+    font-weight: 700;
     color: var(--gold);
-    text-decoration: none;
-    border-radius: 25px;
-    font-weight: bold;
-    transition: all 0.2s;
+    margin: 0 0 0.2rem 0;
 }
 
-.select-btn:hover {
-    background: var(--gold);
-    color: white;
-}
-
-.gold-bg {
-    background: var(--gold);
-    color: white;
-}
-
-.gold-bg:hover {
-    background: #b5921c;
-    border-color: #b5921c;
-}
-
-/* Bottom Note Box */
-.pricing-note {
-    background: rgba(212, 175, 55, 0.05);
-    border: 1px dashed var(--gold);
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    display: inline-block;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 900px) {
-    .pricing-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .price-card {
-        width: 100%;
-        max-width: 400px;
-        transform: none !important;
-    }
-}
-
-/* --- BOOKING PAGE LAYOUT --- */
-
-.booking-layout {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 4rem;
-}
-
-.booking-info {
-    flex: 1;
-}
-
-.booking-info h2 {
-    font-size: 2.5rem;
-    margin: 0.5rem 0 1rem 0;
-}
-
-.booking-p {
-    font-size: 1.05rem;
-    line-height: 1.6;
-    color: #555;
-    margin-bottom: 2rem;
-}
-
-/* Notebook reminder box */
-.scrapbook-note {
-    background: #fdfefe;
-    border: 1px dashed rgba(0,0,0,0.1);
-    border-left: 4px solid var(--gold);
-    padding: 1.5rem;
-    border-radius: 6px;
-    box-shadow: 2px 4px 10px rgba(0,0,0,0.01);
-}
-
-.scrapbook-note h5 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.1rem;
+.client-subtitle {
+    font-size: 1.15rem;
     color: var(--text-dark);
-}
-
-.scrapbook-note ol {
     margin: 0;
-    padding-left: 1.2rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
 }
 
-.scrapbook-note li {
-    font-size: 0.95rem;
-    color: #666;
-    margin-bottom: 0.5rem;
+/* Lower Right Booking Email Block */
+.minimal-footer {
+    position: absolute;
+    bottom: 4rem;
+    right: 12%;
+    text-align: right;
 }
 
-/* Booking Form Elements */
-.booking-form-wrapper {
-    flex: 1.2;
-    background: #ffffff;
-    padding: 2.5rem;
-    border: 1px solid #eee;
-    border-radius: 12px;
-    box-shadow: 3px 8px 20px rgba(0, 0, 0, 0.04);
-    position: relative;
-}
-
-.booking-form-wrapper h3 {
-    margin: 0 0 1.5rem 0;
-    font-size: 1.6rem;
-    color: var(--text-dark);
-    border-bottom: 2px dashed var(--bg-blue);
-    padding-bottom: 0.5rem;
-}
-
-.scrapbook-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    text-align: left;
-}
-
-.form-group label {
-    font-size: 0.9rem;
+.client-email {
+    font-family: var(--font-bubbly);
+    font-size: 1.05rem;
     font-weight: 600;
     color: var(--text-dark);
+    margin: 0;
 }
 
-/* Stylizing Form Fields */
-.form-group input,
-.form-group select,
-.form-group textarea {
-    padding: 0.75rem 1rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background-color: var(--paper-white);
-    font-family: inherit;
-    font-size: 0.95rem;
+/* --- RESPONSIVE FIXES FOR MOBILE DEVICES --- */
+@media (max-width: 950px) {
+    .bg-portfolio-text { font-size: 4rem; margin-top: 4rem; }
+    .client-name { font-size: 2.5rem; }
+    .identity-block { right: 5%; top: 60%; }
+    .minimal-footer { right: 5%; bottom: 2rem; }
+    .editorial-viewport { background-image: linear-gradient(to bottom, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.85) 70%), url('../assets/images/myself.webp'); }
+}
+
+:root {
+    --gold: #d4af37;          
+    --text-dark: #1a2a3a;     
+    --font-clean: 'Fredoka', sans-serif;
+    --font-serif: 'Playfair Display', serif;
+}
+
+/* Reset baseline defaults */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    font-family: var(--font-clean);
+    overflow: hidden;
+}
+
+/* --- MODERN OVERLAY NAVBAR --- */
+.navbar {
+    display: flex;
+    justify-content: flex-end; /* Pushes links to the right side seamlessly */
+    align-items: center;
+    padding: 2.5rem 8%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 10; 
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
     color: var(--text-dark);
-    transition: border-color 0.2s, background-color 0.2s;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: color 0.2s;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--gold);
-    background-color: #fff;
+.nav-links a.active, .nav-links a:hover {
+    color: var(--gold);
 }
 
-/* Submit Button */
-.submit-btn {
-    background-color: var(--gold);
-    color: white;
-    border: none;
-    padding: 1rem;
-    font-size: 1rem;
-    font-weight: bold;
-    border-radius: 25px;
-    cursor: pointer;
-    box-shadow: 2px 4px 10px rgba(212, 175, 55, 0.3);
-    transition: transform 0.2s, background-color 0.2s;
-    margin-top: 0.5rem;
+/* --- EDITORIAL VIEWPORT CANVAS --- */
+.editorial-viewport {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    
+    /* --- FIXING THE SPREAD IMAGE ISSUE --- */
+    background-image: linear-gradient(to right, rgba(255,255,255,0) 20%, rgba(255,255,255,0.8) 70%), url('../assets/images/myself.webp');
+    background-size: contain; /* Prevents the image from stretching or inflating unnaturally */
+    background-position: left center; /* Aligns your portrait perfectly along the left framing */
+    background-repeat: no-repeat;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10rem 12% 6rem 12%;
 }
 
-.submit-btn:hover {
-    transform: translateY(-2px);
-    background-color: #b5921c;
+/* --- TYPOGRAPHY UPGRADES --- */
+
+/* Massive Header Moved to the Right into the White Space */
+.bg-portfolio-text {
+    font-family: var(--font-serif);
+    font-size: 7.5rem; /* Slightly adjusted to make sure it fits perfectly on one line */
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: #2c3e50; 
+    margin: 0;
+    text-align: left; /* Changes text alignment from center to left */
+    width: auto;
+    line-height: 1;
+    text-transform: uppercase;
+    opacity: 0.9;
+    
+    /* Pushes the block to align perfectly with your name on the right */
+    position: absolute;
+    right: 12%;
+    top: 18%; /* Places it elegantly above your name block */
 }
 
-/* Mobile Layout Adaptation */
-@media (max-width: 850px) {
-    .booking-layout {
-        flex-direction: column;
-        gap: 3rem;
-    }
-    .booking-form-wrapper {
-        width: 100%;
-        box-sizing: border-box;
-        transform: none !important;
+/* Mid-Right Block Positioning */
+.identity-block {
+    position: absolute;
+    right: 12%;
+    top: 55%;
+    transform: translateY(-50%);
+    text-align: left;
+}
+
+/* Updated to use the same Editorial Serif Font as Portfolio */
+.client-name {
+    font-family: var(--font-serif);
+    font-size: 3.8rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin: 0 0 0.1rem 0;
+    letter-spacing: 0.5px;
+}
+
+.client-subtitle {
+    font-family: var(--font-clean);
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+/* Lower Right Booking Email Block */
+.minimal-footer {
+    position: absolute;
+    bottom: 5rem;
+    right: 12%;
+    text-align: right;
+}
+
+.client-email {
+    font-family: var(--font-clean);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+/* --- MOBILE COMPATIBILITY SCALING --- */
+@media (max-width: 950px) {
+    .bg-portfolio-text { font-size: 4rem; }
+    .client-name { font-size: 2.5rem; }
+    .identity-block { right: 8%; top: 65%; }
+    .minimal-footer { right: 8%; bottom: 3rem; }
+    .editorial-viewport { 
+        background-size: cover; /* Fallback shift for narrow smartphone windows */
+        background-image: linear-gradient(to bottom, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.9) 65%), url('../assets/images/myself.webp'); 
     }
 }
