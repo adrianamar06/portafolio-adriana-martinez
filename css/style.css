@@ -429,3 +429,100 @@ html, body {
 @media (max-width: 600px) {
     .price-tier-row { flex-direction: column; gap: 1rem; }
 }
+
+/* --- EDITORIAL BOOKING FORM EXCLUSIVE STYLES --- */
+
+.booking-form-container {
+    width: 100%;
+    padding: 0.5rem 0 6rem 0; /* Provides padding at the bottom so elements don't get cut off during active scrolling */
+}
+
+.editorial-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+    width: 100%;
+}
+
+.form-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Minimalist Form Field Labels using Clean Typography */
+.form-input-group label {
+    font-family: var(--font-clean);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Premium Framed Fields */
+.form-input-group input,
+.form-input-group select,
+.form-input-group textarea {
+    font-family: var(--font-clean);
+    font-size: 1rem;
+    padding: 0.9rem 1.2rem;
+    background-color: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 6px;
+    color: var(--text-dark);
+    box-sizing: border-box;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+/* Focus Interaction: Box illuminates beautifully into your brand gold when clicked */
+.form-input-group input:focus,
+.form-input-group select:focus,
+.form-input-group textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.06);
+}
+
+/* Custom placeholder styling matching overall dark color tone constraints */
+::placeholder {
+    color: #a0aab5;
+    font-size: 0.95rem;
+}
+
+/* Premium High Impact Submit Button */
+.submit-gold-btn {
+    font-family: var(--font-clean);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: var(--gold);
+    border: none;
+    border-radius: 30px;
+    padding: 1rem 2.5rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    align-self: flex-start; /* Keeps the button from stretching awkwardly full-width */
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Submit Button Hover State Animation */
+.submit-gold-btn:hover {
+    background-color: #b5921c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
+}
+
+.submit-gold-btn:active {
+    transform: translateY(0);
+}
+
+/* Mobile responsive collapse overrides for standard smartphone inputs */
+@media (max-width: 950px) {
+    .submit-gold-btn { align-self: stretch; text-align: center; }
+    .booking-form-container { padding-bottom: 3rem; }
+}
