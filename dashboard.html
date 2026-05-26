@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Hub | Admin Console</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar" style="justify-content: space-between; padding: 2rem 8%;">
+            <h2 class="client-name" style="font-size: 1.8rem;">Admin Control</h2>
+            <ul class="nav-links">
+                <li><a href="#" id="logoutBtn">Exit Session</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="editorial-page">
+        <section class="about-layout" id="dashboardContent" style="display: none;">
+            
+            <div class="about-image-side" style="height: auto; background-color: #fafafa; padding: 2.5rem; border-radius: 6px; box-sizing: border-box; border: 1px solid #f0f0f0;">
+                <h2 class="section-title" style="font-size: 2.8rem; color: var(--gold);">Overview</h2>
+                <p class="editorial-lead" style="font-size: 1.1rem; margin-bottom: 2rem;">Manage incoming milestones.</p>
+                <div class="feature-item" style="background: white; border-radius: 4px; padding: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.01);">
+                    <h3 style="margin: 0 0 0.5rem 0; font-family: var(--font-serif); font-size: 1.4rem;">USF Niche Tracking</h3>
+                    <p>Review details, coordinate stoles and props, and update status codes directly into your cloud repository layer.</p>
+                </div>
+            </div>
+
+            <div class="about-text-side">
+                <h1 class="section-title">Inbound Requests</h1>
+                <p class="editorial-lead">Real-time repository query streams sorted by submission timeline.</p>
+                
+                <div id="bookingsContainer" class="editorial-features-list">
+                    </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        // Security Gatekeeper: Ensure user has a verified cookie session before rendering
+        async function checkAuth() {
+            try {
+                const res = await fetch('/api/admin/check-session');
+                const data = await res.getRawJson ? await res.getRawJson() : await res.json();
+                if (!data.loggedIn) {
+                    window.location.href = '/login.html';
+                } else {
+                    document.getElementById('dashboardContent').style.display = 'flex';
+                    fetchBookings();
+                }
+            } catch (err) {
+                window.location.href = '/login.html';
+            }
+        }
+
+        // Fetch client list from MongoDB data engine
+        async function fetchBookings() {
+            try {
+                const res = await fetch('/api/admin/bookings');
+                const data = await res.json();
+                if (data.success) {
+                    renderBookings(data.bookings);
+                }
+            } catch (err) {
+                console.error("Error reading repository:", err);
+            }
+        }
+
+        // Render documents into beautifully styled UI cards
+        function renderBookings(bookings) {
+            const container = document.getElementById('bookingsContainer');
+            if(bookings.length === 0) {
+                container.innerHTML = `<p style="font-family: var(--font-clean); color: #888;">No booking requests found in database.</p>`;
+                return;
+            }
+
+            container.innerHTML = bookings.map(b => `
+                <div class="feature-item" style="position: relative;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                        <div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 0.2rem;">${b.name}</h3>
+                            <p style="color: var(--gold); font-weight: 600; font-size: 0.95rem; margin: 0 0 1rem 0;">${b.email}</p>
+                        </div>
+                        <select onchange="updateStatus('${b._id}', this.value)" style="font-family: var(--font-clean); padding: 0.4rem 0.8rem; border-radius: 4px; border: 1px solid #e0e0e0; background: #fff; font-weight: 600; color: var(--text-dark); cursor: pointer;">
+                            <option value="Pending" ${b.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                            <option value="Approved" ${b.status === 'Approved' ? 'selected' : ''}>Approved</option>
+                            <option value="Archived" ${b.status === 'Archived' ? 'selected' : ''}>Archived</option>
+                        </select>
+                    </div>
+                    <p style="margin: 0.5rem 0;"><strong>Setup:</strong> ${b.duration} session • ${b.type} layout</p>
+                    ${b.ideas ? `<p style="background: #fafafa; padding: 0.8rem; border-radius: 4px; font-size: 0.95rem; border-left: 2px solid #e0e0e0; color: #555; margin-top: 0.5rem;">"${b.ideas}"</p>` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Send runtime update payload requests across the API server channel
+        async function updateStatus(id, newStatus) {
+            try {
+                await fetch(`/api/admin/bookings/${id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+            } catch (err) {
+                alert('Failed to execute update lifecycle status changes.');
+            }
+        }
+
+        // Close session processing
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await fetch('/api/admin/logout', { method: 'POST' });
+            window.location.href = '/login.html';
+        });
+
+        // Run security checks on launch
+        checkAuth();
+    </script>
+</body>
+</html>

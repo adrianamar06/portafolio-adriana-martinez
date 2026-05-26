@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Adriana Martinez</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <main class="editorial-page" style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+        <div class="booking-form-container" style="max-width: 450px; width: 100%; padding: 2rem; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
+            <h1 class="section-title" style="font-size: 3rem; text-align: center; margin-bottom: 0.5rem;">Dashboard</h1>
+            <p class="editorial-lead" style="text-align: center; padding-left: 0; border-left: none; margin-bottom: 2rem; font-size: 1.1rem;">Secure Console Management Access</p>
+            
+            <form id="loginForm" class="editorial-form">
+                <div class="form-input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required placeholder="Enter username">
+                </div>
+                <div class="form-input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Enter secure key">
+                </div>
+                <button type="submit" class="submit-gold-btn" style="align-self: stretch; text-align: center; margin-top: 1rem;">Authenticate</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.href = '/dashboard.html'; // Direct to your control workspace
+                } else {
+                    alert('❌ Authentication Failed: ' + result.message);
+                }
+            } catch (error) {
+                alert('❌ Server connection error.');
+            }
+        });
+    </script>
+</body>
+</html>
