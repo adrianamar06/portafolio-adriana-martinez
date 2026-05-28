@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Import Database Models
-const Booking = require('./models/Booking');
-const User = require('./models/User');
+const Booking = require('./models/booking');
+const User = require('./models/user');
 
 // Middleware Configs
 app.use(express.urlencoded({ extended: true }));
