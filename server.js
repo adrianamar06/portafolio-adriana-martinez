@@ -137,7 +137,31 @@ app.patch('/api/admin/bookings/:id', requireAdmin, async (req, res) => {
         res.status(500).json({ success: false, message: "Failed to update booking status." });
     }
 });
+// API Route to add optimized photo links to a client booking
+app.post('/api/bookings/:id/photos', async (req, res) => {
+    try {
+        // Ensure the admin session is active before allowing changes
+        if (!req.session.isAdmin) {
+            return res.status(401).json({ error: "Unauthorized gateway access" });
+        }
 
+        const { photoUrl } = req.body;
+        if (!photoUrl) {
+            return res.status(400).json({ error: "No photo URL provided" });
+        }
+
+        // Find the booking by ID and push the new optimized URL to the array
+        const updatedBooking = await Booking.findByIdAndUpdate(
+            req.params.id,
+            { $push: { optimizedPhotos: photoUrl } },
+            { new: true }
+        );
+
+        res.json({ success: true, message: "Photo linked successfully!", updatedBooking });
+    } catch (err) {
+        res.status(500).json({ error: "Database update failed", details: err.message });
+    }
+});
 // Start the secure full-stack architecture engine
 app.listen(PORT, () => {
     console.log(`Secure full-stack engine running at http://localhost:${PORT}`);
