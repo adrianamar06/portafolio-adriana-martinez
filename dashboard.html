@@ -37,7 +37,7 @@
                 <p class="editorial-lead">Real-time repository query streams sorted by submission timeline.</p>
                 
                 <div id="bookingsContainer" class="editorial-features-list">
-                    </div>
+                </div>
             </div>
 
         </section>
@@ -73,7 +73,7 @@
             }
         }
 
-        // Render documents into beautifully styled UI cards
+        // Render documents into beautifully styled UI cards with asset optimization pipelines
         function renderBookings(bookings) {
             const container = document.getElementById('bookingsContainer');
             if(bookings.length === 0) {
@@ -81,8 +81,19 @@
                 return;
             }
 
-            container.innerHTML = bookings.map(b => `
-                <div class="feature-item" style="position: relative;">
+            container.innerHTML = bookings.map(b => {
+                // Pre-render safely mapped list elements for existing optimized gallery assets
+                const photoElements = b.optimizedPhotos && b.optimizedPhotos.length > 0
+                    ? b.optimizedPhotos.map(url => `
+                        <div style="display: flex; align-items: center; background: #fff; padding: 0.4rem 0.8rem; border-radius: 4px; border: 1px solid #eaeaea; font-size: 0.85rem; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; gap: 0.5rem;">
+                            <span style="color: #4caf50;">✓</span>
+                            <a href="${url}" target="_blank" style="color: #555; text-decoration: none; overflow: hidden; text-overflow: ellipsis;">${url}</a>
+                        </div>
+                    `).join('')
+                    : `<p style="font-size: 0.85rem; color: #aaa; margin: 0; font-style: italic;">No media assets linked yet.</p>`;
+
+                return `
+                <div class="feature-item" style="position: relative; margin-bottom: 2rem; padding: 2rem;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
                         <div>
                             <h3 style="font-size: 1.5rem; margin-bottom: 0.2rem;">${b.name}</h3>
@@ -94,22 +105,79 @@
                             <option value="Archived" ${b.status === 'Archived' ? 'selected' : ''}>Archived</option>
                         </select>
                     </div>
-                    <p style="margin: 0.5rem 0;"><strong>Setup:</strong> ${b.duration} session • ${b.type} layout</p>
-                    ${b.ideas ? `<p style="background: #fafafa; padding: 0.8rem; border-radius: 4px; font-size: 0.95rem; border-left: 2px solid #e0e0e0; color: #555; margin-top: 0.5rem;">"${b.ideas}"</p>` : ''}
+                    
+                    <p style="margin: 0.5rem 0;"><strong>Setup:</strong> ${b.duration || 'Standard'} session • ${b.type || 'Custom'} layout</p>
+                    ${b.ideas ? `<p style="background: #fafafa; padding: 0.8rem; border-radius: 4px; font-size: 0.95rem; border-left: 2px solid #e0e0e0; color: #555; margin-top: 0.5rem; margin-bottom: 1.5rem;">"${b.ideas}"</p>` : ''}
+                    
+                    <hr style="border: 0; border-top: 1px solid #f0f0f0; margin: 1.5rem 0;">
+
+                    <!-- Media Optimization & Feature Highlight Section -->
+                    <div class="media-management-block" style="margin-top: 1rem;">
+                        <h4 style="font-family: var(--font-serif); font-size: 1.1rem; margin: 0 0 0.75rem 0; color: #333;">Optimized Client Media Pipeline</h4>
+                        
+                        <!-- Upload Integration Layout -->
+                        <div class="photo-uploader-box" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                            <input type="text" id="photo-url-${b._id}" placeholder="Paste optimized CDN or Cloudinary photo URL..." style="flex: 1; font-family: var(--font-clean); padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px; font-size: 0.9rem;">
+                            <button onclick="linkPhoto('${b._id}')" style="font-family: var(--font-clean); background: var(--text-dark); color: #fff; border: none; padding: 0.5rem 1.2rem; border-radius: 4px; font-weight: 600; cursor: pointer; transition: background 0.2s;">Link Asset</button>
+                        </div>
+
+                        <!-- Active Live Gallery Stream Component -->
+                        <div style="display: flex; flex-direction: column; gap: 0.4rem; background: #fafafa; padding: 1rem; border-radius: 4px; border: 1px solid #f0f0f0;">
+                            <p style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #888; font-weight: 600; margin: 0 0 0.5rem 0;">Active Gallery Links</p>
+                            <div id="gallery-list-${b._id}" style="display: flex; flex-direction: column; gap: 0.4rem;">
+                                ${photoElements}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // Send runtime update payload requests across the API server channel
         async function updateStatus(id, newStatus) {
             try {
-                await fetch(`/api/admin/bookings/${id}`, {
+                const res = await fetch(`/api/admin/bookings/${id}`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: newStatus })
                 });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Failed status patch interaction.');
             } catch (err) {
-                alert('Failed to execute update lifecycle status changes.');
+                alert('Failed to execute update lifecycle status changes: ' + err.message);
+            }
+        }
+
+        // Link an optimized cloud delivery network photo URL directly into the MongoDB document structure
+        async function linkPhoto(bookingId) {
+            const urlInput = document.getElementById(`photo-url-${bookingId}`);
+            const photoUrl = urlInput.value.trim();
+
+            if (!photoUrl) {
+                alert('Please paste a valid optimized photo asset URL first.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/bookings/${bookingId}/photos`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ photoUrl: photoUrl })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    alert('Optimized photo securely attached to client gallery!');
+                    urlInput.value = ''; // Clean form fields
+                    fetchBookings();    // Re-query database metrics to paint a new link layout instantly
+                } else {
+                    throw new Error(data.error || 'Failed linking structural document paths.');
+                }
+            } catch (err) {
+                console.error('Error linking asset:', err);
+                alert('Failed to save media URL into cloud repository: ' + err.message);
             }
         }
 
