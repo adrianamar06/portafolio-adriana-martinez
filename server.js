@@ -1,168 +1,113 @@
-require('dotenv').config();
 const express = require('express');
-const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
+const path = require('path');
+const User = require('./models/user');
+const Booking = require('./models/booking');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// Import Database Models
-const Booking = require('./models/booking');
-const User = require('./models/user');
-
-// Middleware Configs
-app.use(express.urlencoded({ extended: true }));
+// Middleware infrastructure configurations
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '/')));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// --- INITIALIZE SECURE SESSION TRACKING ---
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'fallback_secret_key',
+    secret: 'usf_bulls_cyber_security_key_2026',
     resave: false,
     saveUninitialized: false,
-    cookie: { 
-        maxAge: 1000 * 60 * 60 * 2, // Session stays alive for 2 hours
-        secure: false // Set to true later when we deploy with HTTPS/SSL on Render
-    }
+    cookie: { maxAge: 24 * 60 * 60 * 1000 } // 1 day session lifecycle
 }));
 
-// --- CLOUD DATABASE CONNECTION & ADMIN AUTO-PROVISIONING ---
-mongoose.connect(process.env.MONGO_URI)
-    .then(async () => {
-        console.log('🍃 Connected flawlessly to MongoDB Cloud Matrix!');
+const MONGO_URI = "mongodb+srv://adrianamelissamartinezpineda:anona12345@cluster0.v7zsc.mongodb.net/photography?retryWrites=true&w=majority";
+
+mongoose.connect(MONGO_URI)
+    .then(() => console.log("Database tunnel connected successfully."))
+    .catch(err => console.error("Database connection failure:", err));
+
+// 1. TEMPORARY BACKDOOR ROOT GENERATOR (Solves credential mismatches instantly)
+app.get('/api/admin/setup-root', async (req, res) => {
+    try {
+        await User.deleteMany({ username: "adrianamartinez" });
+        const hashedPassword = await bcrypt.hash("anona12345", 10);
         
-        // Auto-provision your master admin account securely if it doesn't exist yet
-        const adminExists = await User.findOne({ username: 'adrianamartinez' });
-        if (!adminExists) {
-            const hashedPassword = await bcrypt.hash('anona12345', 12);
-            const defaultAdmin = new User({
-                username: 'adrianamartinez',
-                password: hashedPassword
-            });
-            await defaultAdmin.save();
-            console.log('👤 Secure master admin account [adrianamartinez] auto-provisioned!');
-        }
-    })
-    .catch(err => console.error('❌ Database connection error:', err));
-
-// --- GATED BACKEND SECURITY MIDDLEWARE ---
-// Intercepts requests and verifies if the browser has an active admin session cookie
-const requireAdmin = (req, res, next) => {
-    if (req.session && req.session.isAdmin) {
-        next(); // Authorization granted! Proceed to the endpoint logic
-    } else {
-        res.status(401).json({ success: false, message: "Unauthorized access denied." });
+        const masterAdmin = new User({
+            username: "adrianamartinez",
+            password: hashedPassword
+        });
+        
+        await masterAdmin.save();
+        res.send("SUCCESS: Master admin created flawlessly. You can close this tab and log in now!");
+    } catch (err) {
+        res.status(500).send("Setup error: " + err.message);
     }
-};
+});
 
-// --- AUTHENTICATION API ROUTES ---
-
-// Process login credentials
+// 2. SECURITY AUTHENTICATION PROCESSOR
 app.post('/api/admin/login', async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({ username });
-
+        const user = await User.findOne({ username: username.trim() });
+        
         if (!user) {
-            return res.status(400).json({ success: false, message: "Invalid username or password." });
+            return res.status(401).json({ error: "Invalid username parameters." });
         }
-
-        // Compare the submitted password with the securely encrypted database hash
+        
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(400).json({ success: false, message: "Invalid username or password." });
+            return res.status(401).json({ error: "Invalid password encryption verification match." });
         }
-
-        // Mark the user session token as an authenticated Admin status state
+        
         req.session.isAdmin = true;
-        req.session.username = user.username;
-
-        res.json({ success: true, message: "Login successful!" });
-    } catch (error) {
-        res.status(500).json({ success: false, message: "Server login processing error." });
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: "Server processing bottleneck encountered." });
     }
 });
 
-// Process logout clearing
-app.post('/api/admin/logout', (req, res) => {
-    req.session.destroy(err => {
-        if (err) return res.status(500).json({ success: false, message: "Logout failed." });
-        res.clearCookie('connect.sid');
-        res.json({ success: true, message: "Logged out completely." });
-    });
-});
-
-// Verifies session status on page reloads
+// 3. SESSION STATUS GATEKEEPER
 app.get('/api/admin/check-session', (req, res) => {
-    if (req.session && req.session.isAdmin) {
-        res.json({ loggedIn: true });
-    } else {
-        res.json({ loggedIn: false });
-    }
+    res.json({ loggedIn: !!req.session.isAdmin });
 });
 
-// --- CORE BOOKING LOGIC API ENDPOINTS ---
-
-// Public endpoint: Save an incoming client booking request
-app.post('/api/book', async (req, res) => {
-    try {
-        const { name, email, duration, type, ideas } = req.body;
-        const newBooking = new Booking({ name, email, duration, type, ideas });
-        await newBooking.save();
-        res.status(201).json({ success: true, message: "Booking request saved perfectly!" });
-    } catch (error) {
-        res.status(500).json({ success: false, message: "Server error, please try again." });
-    }
+// 4. LOGOUT MANAGEMENT
+app.post('/api/admin/logout', (req, res) => {
+    req.session.destroy();
+    res.json({ success: true });
 });
 
-// Gated Dashboard endpoint: Retrieve all client bookings (Requires active admin cookie session)
-app.get('/api/admin/bookings', requireAdmin, async (req, res) => {
+// 5. FETCH BOOKINGS METRICS
+app.get('/api/admin/bookings', async (req, res) => {
+    if (!req.session.isAdmin) return res.status(401).json({ error: "Unauthorized access." });
     try {
-        const bookings = await Booking.find().sort({ createdAt: -1 });
+        const bookings = await Booking.find().sort({ _id: -1 });
         res.json({ success: true, bookings });
-    } catch (error) {
-        res.status(500).json({ success: false, message: "Failed to fetch bookings." });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 
-// Gated Dashboard endpoint: Update booking workflow status (Requires active admin cookie session)
-app.patch('/api/admin/bookings/:id', requireAdmin, async (req, res) => {
-    try {
-        const { status } = req.body;
-        const updatedBooking = await Booking.findByIdAndUpdate(req.params.id, { status }, { new: true });
-        res.json({ success: true, booking: updatedBooking });
-    } catch (error) {
-        res.status(500).json({ success: false, message: "Failed to update booking status." });
-    }
-});
-// API Route to add optimized photo links to a client booking
+// 6. PHOTO ASSET OPTIMIZATION HOOK ROUTE
 app.post('/api/bookings/:id/photos', async (req, res) => {
+    if (!req.session.isAdmin) return res.status(401).json({ error: "Unauthorized access." });
     try {
-        // Ensure the admin session is active before allowing changes
-        if (!req.session.isAdmin) {
-            return res.status(401).json({ error: "Unauthorized gateway access" });
-        }
-
         const { photoUrl } = req.body;
-        if (!photoUrl) {
-            return res.status(400).json({ error: "No photo URL provided" });
-        }
-
-        // Find the booking by ID and push the new optimized URL to the array
         const updatedBooking = await Booking.findByIdAndUpdate(
             req.params.id,
             { $push: { optimizedPhotos: photoUrl } },
             { new: true }
         );
-
-        res.json({ success: true, message: "Photo linked successfully!", updatedBooking });
+        res.json({ success: true, updatedBooking });
     } catch (err) {
-        res.status(500).json({ error: "Database update failed", details: err.message });
+        res.status(500).json({ error: err.message });
     }
 });
-// Start the secure full-stack architecture engine
-app.listen(PORT, () => {
-    console.log(`Secure full-stack engine running at http://localhost:${PORT}`);
+
+// Catch-all route to serve the visual application entry point
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server executing live on channel ${PORT}`));
