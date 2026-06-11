@@ -20,7 +20,7 @@ app.use(session({
     cookie: { maxAge: 24 * 60 * 60 * 1000 } // 1 day session lifecycle
 }));
 
-const MONGO_URI = "mongodb+srv://adrianamelissamartinezpineda:anona12345@cluster0.v7zsc.mongodb.net/photography?retryWrites=true&w=majority";
+process.env.MONGO_URI
 
 mongoose.connect(MONGO_URI)
     .then(() => console.log("Database tunnel connected successfully."))
